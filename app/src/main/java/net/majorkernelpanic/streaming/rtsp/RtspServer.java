@@ -61,7 +61,7 @@ public class RtspServer extends Service {
 	public final static String TAG = "RtspServer";
 
 	/** The server name that will appear in responses. */
-	public static String SERVER_NAME = "MajorKernelPanic RTSP Server";
+	public static String SERVER_NAME = "OoDroid RTSP Server";
 
 	/** Port used by default. */
 	public static final int DEFAULT_RTSP_PORT = 8086;

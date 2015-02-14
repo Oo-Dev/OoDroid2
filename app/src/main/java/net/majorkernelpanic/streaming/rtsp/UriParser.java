@@ -95,6 +95,7 @@ public class UriParser {
 
 				// MULTICAST -> the stream will be sent to a multicast group
 				// The default mutlicast address is 228.5.6.7, but the client can specify another
+                // TODO multicast is supported here!
 				else if (param.getName().equalsIgnoreCase("multicast")) {
 					if (param.getValue()!=null) {
 						try {

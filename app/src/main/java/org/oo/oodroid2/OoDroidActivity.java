@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import net.majorkernelpanic.streaming.SessionBuilder;
 import net.majorkernelpanic.streaming.gl.SurfaceView;
 import net.majorkernelpanic.streaming.rtsp.RtspServer;
+import net.majorkernelpanic.streaming.video.VideoQuality;
 
 
 public class OoDroidActivity extends ActionBarActivity {
@@ -42,7 +43,8 @@ public class OoDroidActivity extends ActionBarActivity {
                 .setPreviewOrientation(90)
                 .setContext(getApplicationContext())
                 .setAudioEncoder(SessionBuilder.AUDIO_NONE)
-                .setVideoEncoder(SessionBuilder.VIDEO_H264);
+                .setVideoEncoder(SessionBuilder.VIDEO_H263);
+               // .setVideoQuality(new VideoQuality(360,480,20,500000));
 
         // Starts the RTSP server
         this.startService(new Intent(this,RtspServer.class));
