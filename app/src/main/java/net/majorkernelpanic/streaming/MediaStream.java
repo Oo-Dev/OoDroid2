@@ -69,7 +69,7 @@ public abstract class MediaStream implements Stream {
 	protected InetAddress mDestination;
 	protected LocalSocket mReceiver, mSender = null;
 	private LocalServerSocket mLss = null;
-	private int mSocketId, mTTL = 64;
+	private int mSocketId, mTTL = 2;//TODO set TTL here
 
 	protected MediaRecorder mMediaRecorder;
 	protected MediaCodec mMediaCodec;
