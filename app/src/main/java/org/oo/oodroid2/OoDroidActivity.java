@@ -2,15 +2,10 @@ package org.oo.oodroid2;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,16 +14,9 @@ import android.widget.EditText;
 
 import net.majorkernelpanic.streaming.Session;
 import net.majorkernelpanic.streaming.SessionBuilder;
-import net.majorkernelpanic.streaming.Stream;
 import net.majorkernelpanic.streaming.audio.AudioQuality;
 import net.majorkernelpanic.streaming.gl.SurfaceView;
-import net.majorkernelpanic.streaming.rtsp.RtspServer;
-import net.majorkernelpanic.streaming.video.H263Stream;
 import net.majorkernelpanic.streaming.video.VideoQuality;
-import net.majorkernelpanic.streaming.video.VideoStream;
-
-import java.io.IOException;
-import java.net.InetAddress;
 
 
 public class OoDroidActivity extends ActionBarActivity implements View.OnClickListener,Session.Callback,SurfaceHolder.Callback{
@@ -36,9 +24,9 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
 
     private final static String TAG = "OoDroidActivity";
 
-    private Button mButton1, mButton2;
+    private Button mPlayButton, mFlashButton;
     private SurfaceView mSurfaceView;
-    private EditText mEditText;
+    private EditText mDstIPText;
     private Session mSession;
 
     @Override
@@ -48,15 +36,16 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        mButton1 = (Button) findViewById(R.id.button1);
-        mButton2 = (Button) findViewById(R.id.button2);
+        mPlayButton = (Button) findViewById(R.id.bt_play);
+        mFlashButton = (Button) findViewById(R.id.bt_flash);
         mSurfaceView = (SurfaceView) findViewById(R.id.surface);
-        mEditText = (EditText) findViewById(R.id.editText1);
+        mDstIPText = (EditText) findViewById(R.id.et_dst);
 
+        //set nessesary information of session
         mSession = SessionBuilder.getInstance()
                 .setCallback(this)
                 .setSurfaceView(mSurfaceView)
-                .setPreviewOrientation(270)
+                .setPreviewOrientation(90)//FIXME orientation is wrong
                 .setContext(getApplicationContext())
                 .setAudioEncoder(SessionBuilder.AUDIO_NONE)
                 .setAudioQuality(new AudioQuality(16000, 32000))
@@ -64,8 +53,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
                 .setVideoQuality(new VideoQuality(320,240,20,500000))
                 .build();
 
-        mButton1.setOnClickListener(this);
-        mButton2.setOnClickListener(this);
+        mPlayButton.setOnClickListener(this);
+        mFlashButton.setOnClickListener(this);
 
         mSurfaceView.getHolder().addCallback(this);
 
@@ -75,9 +64,9 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     public void onResume() {
         super.onResume();
         if (mSession.isStreaming()) {
-            mButton1.setText("stop");
+            mPlayButton.setText(R.string.stop);
         } else {
-            mButton1.setText("start");
+            mPlayButton.setText(R.string.start);
         }
     }
 
@@ -89,18 +78,18 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.button1) {
+        if (v.getId() == R.id.bt_play) {
             // Starts/stops streaming
-            mSession.setDestination(mEditText.getText().toString());
+            mSession.setDestination(mDstIPText.getText().toString());
             if (!mSession.isStreaming()) {
                 mSession.configure();
             } else {
                 mSession.stop();
             }
-            mButton1.setEnabled(false);
+            mPlayButton.setEnabled(false);
         } else {
-            // Switch between the two cameras
-            mSession.switchCamera();
+            // flash light
+            mSession.toggleFlash();
         }
     }
 
@@ -111,7 +100,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public void onSessionError(int message, int streamType, Exception e) {
-        mButton1.setEnabled(true);
+        mPlayButton.setEnabled(true);
         if (e != null) {
             logError(e.getMessage());
         }
@@ -137,15 +126,15 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     @Override
     public void onSessionStarted() {
         Log.d(TAG,"Session started.");
-        mButton1.setEnabled(true);
-        mButton1.setText("stop");
+        mPlayButton.setEnabled(true);
+        mPlayButton.setText(R.string.stop);
     }
 
     @Override
     public void onSessionStopped() {
         Log.d(TAG,"Session stopped.");
-        mButton1.setEnabled(true);
-        mButton1.setText("start");
+        mPlayButton.setEnabled(true);
+        mPlayButton.setText(R.string.start);
     }
 
     /** Displays a popup to report the error to the user */

@@ -20,10 +20,9 @@
 
 package net.majorkernelpanic.streaming;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.concurrent.CountDownLatch;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 
 import net.majorkernelpanic.streaming.audio.AudioQuality;
 import net.majorkernelpanic.streaming.audio.AudioStream;
@@ -32,13 +31,12 @@ import net.majorkernelpanic.streaming.exceptions.ConfNotSupportedException;
 import net.majorkernelpanic.streaming.exceptions.InvalidSurfaceException;
 import net.majorkernelpanic.streaming.exceptions.StorageUnavailableException;
 import net.majorkernelpanic.streaming.gl.SurfaceView;
-import net.majorkernelpanic.streaming.rtsp.RtspClient;
 import net.majorkernelpanic.streaming.video.VideoQuality;
 import net.majorkernelpanic.streaming.video.VideoStream;
-import android.hardware.Camera.CameraInfo;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * You should instantiate this class with the {@link SessionBuilder}.<br />
@@ -79,7 +77,7 @@ public class Session {
 	/** 
 	 * The internal storage of the phone is not ready. 
 	 * libstreaming tried to store a test file on the sdcard but couldn't.
-	 * See H264Stream and AACStream to find out why libstreaming would want to something like that. 
+	 * See H264Stream and AACStream to find out why libstreaming would want to do something like that.
 	 */
 	public final static int ERROR_STORAGE_NOT_READY = 0x02;
 
@@ -320,7 +318,7 @@ public class Session {
 		}
 		sessionDescription.append("v=0\r\n");
 		sessionDescription.append("o=- "+mTimestamp+" "+mTimestamp+" IN IP4 "+mOrigin+"\r\n");
-		sessionDescription.append("s=Unnamed\r\n");
+		sessionDescription.append("s=Oodroid Show\r\n");
 		sessionDescription.append("i=N/A\r\n");
 		sessionDescription.append("c=IN IP4 "+mDestination+"\r\n");
 		// t=0 0 means the session is permanent (we don't know when it will stop)
@@ -334,7 +332,7 @@ public class Session {
 		if (mVideoStream != null) {
 			sessionDescription.append(mVideoStream.getSessionDescription());
 			sessionDescription.append("a=control:trackID="+1+"\r\n");
-		}			
+		}
 		return sessionDescription.toString();
 	}
 

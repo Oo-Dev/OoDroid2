@@ -9,7 +9,7 @@
         android:id="@+id/surface"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/editText1" />
+        android:layout_above="@+id/et_dst" />
 
     <LinearLayout
         android:id="@+id/layout1"
@@ -21,22 +21,22 @@
         android:layout_alignParentRight="true" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/bt_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="start" />
+            android:text="@string/start" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/bt_flash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Swap" />
+            android:text="@string/flash" />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/et_dst"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout1"
