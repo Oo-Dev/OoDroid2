@@ -20,14 +20,6 @@
 
 package net.majorkernelpanic.streaming;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.util.Random;
-
-import net.majorkernelpanic.streaming.audio.AudioStream;
-import net.majorkernelpanic.streaming.rtp.AbstractPacketizer;
-import net.majorkernelpanic.streaming.video.VideoStream;
 import android.annotation.SuppressLint;
 import android.media.MediaCodec;
 import android.media.MediaRecorder;
@@ -35,6 +27,13 @@ import android.net.LocalServerSocket;
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
 import android.util.Log;
+
+import net.majorkernelpanic.streaming.rtp.AbstractPacketizer;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.util.Random;
 
 /**
  * A MediaRecorder that streams what it records using a packetizer from the RTP package.
@@ -69,7 +68,7 @@ public abstract class MediaStream implements Stream {
 	protected InetAddress mDestination;
 	protected LocalSocket mReceiver, mSender = null;
 	private LocalServerSocket mLss = null;
-	private int mSocketId, mTTL = 2;//TODO set TTL here
+	private int mSocketId, mTTL = 64;
 
 	protected MediaRecorder mMediaRecorder;
 	protected MediaCodec mMediaCodec;

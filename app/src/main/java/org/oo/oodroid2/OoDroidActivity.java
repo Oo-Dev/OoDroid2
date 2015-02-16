@@ -2,9 +2,12 @@ package org.oo.oodroid2;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -28,6 +31,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     private SurfaceView mSurfaceView;
     private EditText mDstIPText;
     private Session mSession;
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,11 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         mFlashButton = (Button) findViewById(R.id.bt_flash);
         mSurfaceView = (SurfaceView) findViewById(R.id.surface);
         mDstIPText = (EditText) findViewById(R.id.et_dst);
-
+        
+        mSharedPreferences = this.getPreferences(MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+        mDstIPText.setText(mSharedPreferences.getString("dstIP","239.1.1.1"));
+        
         //set nessesary information of session
         mSession = SessionBuilder.getInstance()
                 .setCallback(this)
@@ -51,10 +60,28 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
                 .setAudioQuality(new AudioQuality(16000, 32000))
                 .setVideoEncoder(SessionBuilder.VIDEO_H264)
                 .setVideoQuality(new VideoQuality(320,240,20,500000))
+                .setTimeToLive(1)
                 .build();
 
         mPlayButton.setOnClickListener(this);
         mFlashButton.setOnClickListener(this);
+        mDstIPText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mEditor.putString("dstIP",s.toString());
+                mEditor.commit();
+            }
+        });
 
         mSurfaceView.getHolder().addCallback(this);
 
@@ -119,9 +146,10 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         // that you can send to the receiver of the stream.
         // For example, to receive the stream in VLC, store the session description in a .sdp file
         // and open it with VLC while streaming.
+        
         Log.d(TAG, mSession.getSessionDescription());
         mSession.start();
-    }
+    }   
 
     @Override
     public void onSessionStarted() {
