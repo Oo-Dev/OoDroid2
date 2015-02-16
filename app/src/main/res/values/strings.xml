@@ -6,5 +6,6 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="flash">Flash</string>
+    <string name="bit_rate">Bit rate: </string>
 
 </resources>

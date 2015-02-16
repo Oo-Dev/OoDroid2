@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.majorkernelpanic.streaming.Session;
 import net.majorkernelpanic.streaming.SessionBuilder;
@@ -31,6 +32,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     private SurfaceView mSurfaceView;
     private EditText mDstIPText;
     private Session mSession;
+    private TextView mBitRate;
     SharedPreferences mSharedPreferences;
     SharedPreferences.Editor mEditor;
 
@@ -45,6 +47,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         mFlashButton = (Button) findViewById(R.id.bt_flash);
         mSurfaceView = (SurfaceView) findViewById(R.id.surface);
         mDstIPText = (EditText) findViewById(R.id.et_dst);
+        mBitRate = (TextView) findViewById(R.id.tv_bitrate_value);
         
         mSharedPreferences = this.getPreferences(MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
@@ -122,7 +125,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public void onBitrateUpdate(long bitrate) {
-        //Log.d(TAG,"Bitrate: "+bitrate);
+        Log.d(TAG,"Bitrate: "+bitrate);
+        mBitRate.setText((int)(bitrate/1000) + "K");
     }
 
     @Override

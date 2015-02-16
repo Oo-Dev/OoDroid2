@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/et_dst" />
+    
+    
 
     <LinearLayout
         android:id="@+id/layout1"
@@ -46,5 +48,27 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="239.1.1.1" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/et_dst"
+        android:layout_alignParentRight="true"
+        android:background="@color/background_floating_material_light">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bit_rate"
+        android:id="@+id/tv_bitrate"
+        android:layout_above="@+id/et_dst"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0K"
+        android:id="@+id/tv_bitrate_value"
+        android:layout_above="@+id/et_dst"
+        android:layout_toRightOf="@+id/tv_bitrate"/>
+    </LinearLayout>
 
 </RelativeLayout>

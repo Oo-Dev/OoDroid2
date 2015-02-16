@@ -4,5 +4,6 @@
     <string name="start">开始</string>
     <string name="stop">停止</string>
     <string name="flash">闪光灯</string>
+    <string name="bit_rate">比特率</string>
 
 </resources>
