@@ -65,7 +65,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0K"
+        android:text="@string/bit_rate_zero"
         android:id="@+id/tv_bitrate_value"
         android:layout_above="@+id/et_dst"
         android:layout_toRightOf="@+id/tv_bitrate"/>

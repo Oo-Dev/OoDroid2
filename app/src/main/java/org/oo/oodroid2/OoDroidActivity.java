@@ -33,7 +33,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     private EditText mDstIPText;
     private Session mSession;
     private TextView mBitRate;
-    SharedPreferences mSharedPreferences;
+    SharedPreferences settings;
     SharedPreferences.Editor mEditor;
 
     @Override
@@ -49,15 +49,15 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         mDstIPText = (EditText) findViewById(R.id.et_dst);
         mBitRate = (TextView) findViewById(R.id.tv_bitrate_value);
         
-        mSharedPreferences = this.getPreferences(MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
-        mDstIPText.setText(mSharedPreferences.getString("dstIP","239.1.1.1"));
+        settings = this.getPreferences(MODE_PRIVATE);
+        mEditor = settings.edit();
+        mDstIPText.setText(settings.getString("dstIP","239.1.1.1"));
         
         //set nessesary information of session
         mSession = SessionBuilder.getInstance()
                 .setCallback(this)
                 .setSurfaceView(mSurfaceView)
-                .setPreviewOrientation(90)//FIXME orientation is wrong
+                .setPreviewOrientation(90)//FIXME orientation is inappropriate
                 .setContext(getApplicationContext())
                 .setAudioEncoder(SessionBuilder.AUDIO_NONE)
                 .setAudioQuality(new AudioQuality(16000, 32000))
@@ -125,8 +125,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public void onBitrateUpdate(long bitrate) {
-        Log.d(TAG,"Bitrate: "+bitrate);
-        mBitRate.setText((int)(bitrate/1000) + "K");
+        mBitRate.setText((int)(bitrate/1000) + "Kbps");
     }
 
     @Override
