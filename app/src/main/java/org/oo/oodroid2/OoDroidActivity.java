@@ -22,6 +22,11 @@ import net.majorkernelpanic.streaming.audio.AudioQuality;
 import net.majorkernelpanic.streaming.gl.SurfaceView;
 import net.majorkernelpanic.streaming.video.VideoQuality;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 
 public class OoDroidActivity extends ActionBarActivity implements View.OnClickListener,Session.Callback,SurfaceHolder.Callback{
 
@@ -149,7 +154,21 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         // that you can send to the receiver of the stream.
         // For example, to receive the stream in VLC, store the session description in a .sdp file
         // and open it with VLC while streaming.
-        
+        try {
+            OutputStream mDescriptionOutput = new FileOutputStream("session.sdp");
+            try {
+                mDescriptionOutput.write(mSession.getSessionDescription().getBytes());
+                mDescriptionOutput.flush();
+                mDescriptionOutput.close();
+            } catch (IOException e) {
+                logError("Fail to save session.sdp");
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "unable to save session description");
+            logError("Fail to find session.sdp");
+            e.printStackTrace();
+        }
         Log.d(TAG, mSession.getSessionDescription());
         mSession.start();
     }   
