@@ -23,7 +23,6 @@ import net.majorkernelpanic.streaming.gl.SurfaceView;
 import net.majorkernelpanic.streaming.video.VideoQuality;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -155,7 +154,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         // For example, to receive the stream in VLC, store the session description in a .sdp file
         // and open it with VLC while streaming.
         try {
-            OutputStream mDescriptionOutput = new FileOutputStream("session.sdp");
+            OutputStream mDescriptionOutput = this.openFileOutput("session.sdp",MODE_MULTI_PROCESS);
             try {
                 mDescriptionOutput.write(mSession.getSessionDescription().getBytes());
                 mDescriptionOutput.flush();
