@@ -22,6 +22,8 @@ import net.majorkernelpanic.streaming.audio.AudioQuality;
 import net.majorkernelpanic.streaming.gl.SurfaceView;
 import net.majorkernelpanic.streaming.video.VideoQuality;
 
+import java.io.IOException;
+
 import oo.org.server.SDPDistributor;
 
 
@@ -29,6 +31,9 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
 
 
     private final static String TAG = "OoDroidActivity";
+
+    /** Key used in the SharedPreferences for IP in et_dst. */
+    public final static String KEY_IP = "dstIP";
 
     private Button mPlayButton, mFlashButton;
     private SurfaceView mSurfaceView;
@@ -53,7 +58,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         
         settings = this.getPreferences(MODE_PRIVATE);
         mEditor = settings.edit();
-        mDstIPText.setText(settings.getString("dstIP","239.1.1.1"));
+        mDstIPText.setText(settings.getString(KEY_IP,"239.1.1.1"));
         
         //set nessesary information of session
         mSession = SessionBuilder.getInstance()
@@ -168,7 +173,12 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         }*/
         
         // TODO Start sdp file distributor here.
-        new SDPDistributor(mSession.getSessionDescription()).start();
+        try {
+            new SDPDistributor(mSession.getSessionDescription()).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG,"Open SDP distributor error");
+        }
         Log.d(TAG, mSession.getSessionDescription());
         mSession.start();
     }   
