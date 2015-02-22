@@ -171,8 +171,6 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
             logError("Fail to find session.sdp");
             e.printStackTrace();
         }*/
-        
-        // TODO Start sdp file distributor here.
         try {
             new SDPDistributor(mSession.getSessionDescription()).start();
         } catch (IOException e) {
