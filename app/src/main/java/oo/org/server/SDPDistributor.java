@@ -16,9 +16,12 @@ import java.net.Socket;
 public class SDPDistributor extends Thread{
     private final static String TAG="SDPDistributor";
 
+    /** Client wants sdp file */
     final static String REQUEST_SDP = "REQUEST SDP FILE";
 
     private String mSessionDiscription;
+    
+    /** Port used by default*/
     public final static int DISTRIBUTOR_DEFAULT_PORT = 25580;
     ServerSocket mDistributor;
 
@@ -35,18 +38,16 @@ public class SDPDistributor extends Thread{
         Log.i(TAG, "SDP distributor is listening on port " + mDistributor.getLocalPort());
         while(!Thread.interrupted()) {
             try {
-                new WorkerThread(mDistributor.accept());
+                new WorkerThread(mDistributor.accept()).start();
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
             }
         }
         Log.i(TAG, "SDP distributor stopped !");
-
     }
-    
-    
-    private class WorkerThread extends Thread{
+
+    class WorkerThread extends Thread{
         
         private Socket mClient;
         
@@ -62,16 +63,15 @@ public class SDPDistributor extends Thread{
                 processRequest(new BufferedReader(new InputStreamReader(mClient.getInputStream())));
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.e(TAG,"InputStream error");
             } catch (ClassNotFoundException e) {
-                //TODO send back error
+                //TODO send back "Unknown request" error
                 e.printStackTrace();
             }
         }
         
         void processRequest(BufferedReader bf) throws ClassNotFoundException{
             String line;
-            
-            
             try {
                 while((line = bf.readLine()) == null){
                     switch (line){
@@ -83,20 +83,12 @@ public class SDPDistributor extends Thread{
                 Log.i(TAG,"Client disconnected");
                 e.printStackTrace();
             }
-
-
         }
         
         void sendSDP(OutputStream out) throws IOException {
-
             out.write(mSessionDiscription.getBytes());
-            
         }
     }
-    
-
-    
-    
 
     public int getPort() {
         return mPort;
