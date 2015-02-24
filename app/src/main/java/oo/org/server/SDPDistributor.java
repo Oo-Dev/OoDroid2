@@ -21,6 +21,8 @@ public class SDPDistributor extends Thread{
 
     private String mSessionDiscription;
     
+    protected boolean alive = false;
+    
     /** Port used by default*/
     public final static int DISTRIBUTOR_DEFAULT_PORT = 25580;
     ServerSocket mDistributor;
@@ -28,17 +30,18 @@ public class SDPDistributor extends Thread{
     protected int mPort = DISTRIBUTOR_DEFAULT_PORT;
 
     
-    public SDPDistributor(String sessionDiscription) throws IOException {
+    public SDPDistributor(String sessionDiscription){
         this.mSessionDiscription = sessionDiscription;
-        mDistributor = new ServerSocket(DISTRIBUTOR_DEFAULT_PORT);
     }
 
     @Override
     public void run() {
-        Log.i(TAG, "SDP distributor is listening on port " + mDistributor.getLocalPort());
+        alive = true;
         while(!Thread.interrupted()) {
             try {
-                new WorkerThread(mDistributor.accept()).start();
+                Log.d(TAG, "SDP distributor is listening on port " + mDistributor.getLocalPort());
+                Socket client = mDistributor.accept();
+                new WorkerThread(client).start();
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
@@ -47,6 +50,41 @@ public class SDPDistributor extends Thread{
         Log.i(TAG, "SDP distributor stopped !");
     }
 
+    public void stopServer() {
+        try {
+            if(!mDistributor.isClosed()) {
+                Log.d("OoDroidActivity","SDP server is stopped");
+                this.interrupt();
+                mDistributor.close();
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "close server error");
+            e.printStackTrace();
+        }
+    }
+
+
+    public void startServer() throws IOException {
+        mDistributor = new ServerSocket(mPort);
+        mDistributor.setSoTimeout(100);
+
+        Log.d(TAG,"starting server : ");
+        if(!this.isRunning()) {
+            Log.d(TAG, "first");
+            this.start();
+        }
+        else{
+            if(this.isInterrupted())
+                Log.d(TAG,"interrupted");
+            else
+                Log.d(TAG, "not interrupted");
+            this.interrupt();
+            if(this.isInterrupted())
+                Log.d(TAG,"interrupted");
+            else
+                Log.d(TAG, "not interrupted");
+        }
+    }
     class WorkerThread extends Thread{
         
         private Socket mClient;
@@ -96,5 +134,10 @@ public class SDPDistributor extends Thread{
 
     public void setPort(int mPort) {
         this.mPort = mPort;
+    }
+    
+    public boolean isRunning(){
+        return alive;
+
     }
 }

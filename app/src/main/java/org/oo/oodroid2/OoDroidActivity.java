@@ -35,6 +35,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     /** Key used in the SharedPreferences for IP in et_dst. */
     public final static String KEY_IP = "dstIP";
 
+    private SDPDistributor mDistributorServer;
+    
     private Button mPlayButton, mFlashButton;
     private SurfaceView mSurfaceView;
     private EditText mDstIPText;
@@ -152,40 +154,28 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     @Override
     public void onSessionConfigured() {
         Log.d(TAG,"Preview configured.");
-        // Once the stream is configured, you can get a SDP formatted session description
-        // that you can send to the receiver of the stream.
-        // For example, to receive the stream in VLC, store the session description in a .sdp file
-        // and open it with VLC while streaming.
-        /*try {
-            OutputStream mDescriptionOutput = this.openFileOutput("session.sdp",MODE_MULTI_PROCESS);
-            try {
-                mDescriptionOutput.write(mSession.getSessionDescription().getBytes());
-                mDescriptionOutput.flush();
-                mDescriptionOutput.close();
-            } catch (IOException e) {
-                logError("Fail to save session.sdp");
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "unable to save session description");
-            logError("Fail to find session.sdp");
-            e.printStackTrace();
-        }*/
-        try {
-            new SDPDistributor(mSession.getSessionDescription()).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(TAG,"Open SDP distributor error");
-        }
+        
+        //FIXME I don't know how to close a thread,so I have to create a new one every time...
+        //if(mDistributorServer == null)
+            mDistributorServer = new SDPDistributor(mSession.getSessionDescription());
+
         Log.d(TAG, mSession.getSessionDescription());
         mSession.start();
-    }   
+    }
 
     @Override
     public void onSessionStarted() {
         Log.d(TAG,"Session started.");
         mPlayButton.setEnabled(true);
         mPlayButton.setText(R.string.stop);
+        try {
+            Log.d(TAG,"Status of Distributor Server before start server: " + (mDistributorServer.isInterrupted() ? "interrupted" : "Active"));
+            mDistributorServer.startServer();// Start or restart
+            Log.d(TAG,"Status of Distributor Server after start server: " + (mDistributorServer.isInterrupted() ? "interrupted" : "Active"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG,"distributor start error");
+        }
     }
 
     @Override
@@ -193,6 +183,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         Log.d(TAG,"Session stopped.");
         mPlayButton.setEnabled(true);
         mPlayButton.setText(R.string.start);
+        mDistributorServer.stopServer();
+        Log.d(TAG,"Status of Distributor Server after stop server: " + (mDistributorServer.isInterrupted() ? "interrupted" : "Active"));
     }
 
     /** Displays a popup to report the error to the user */
