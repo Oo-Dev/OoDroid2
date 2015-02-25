@@ -17,14 +17,14 @@ public class SDPDistributor extends Thread{
     private final static String TAG="SDPDistributor";
 
     /** Client wants sdp file */
-    final static String REQUEST_SDP = "REQUEST SDP FILE";
+    private final static String REQUEST_SDP = "REQUEST SDP FILE";
 
     private String mSessionDiscription;
     
     protected boolean alive = false;
     
     /** Port used by default*/
-    public final static int DISTRIBUTOR_DEFAULT_PORT = 25580;
+    public final static int DISTRIBUTOR_DEFAULT_PORT = 25581;
     ServerSocket mDistributor;
 
     protected int mPort = DISTRIBUTOR_DEFAULT_PORT;
@@ -106,14 +106,22 @@ public class SDPDistributor extends Thread{
                 //TODO send back "Unknown request" error
                 e.printStackTrace();
             }
+            Log.i(TAG,"Connect end");
+            try {
+                mClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG,"Client close error");
+            }
         }
         
         void processRequest(BufferedReader bf) throws ClassNotFoundException{
             String line;
             try {
-                while((line = bf.readLine()) == null){
+                while((line = bf.readLine()) != null){
+                    Log.d(TAG,"request message is " + line);
                     switch (line){
-                        case REQUEST_SDP:sendSDP(mClient.getOutputStream());break;
+                        case REQUEST_SDP:Log.d(TAG,"SDP file is requested");sendSDP(mClient.getOutputStream());break;
                         default:throw new ClassNotFoundException("Unknown request");
                     }
                 }
@@ -125,6 +133,7 @@ public class SDPDistributor extends Thread{
         
         void sendSDP(OutputStream out) throws IOException {
             out.write(mSessionDiscription.getBytes());
+            out.flush();
         }
     }
 
