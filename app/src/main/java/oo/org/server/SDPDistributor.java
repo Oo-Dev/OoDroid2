@@ -2,10 +2,10 @@ package oo.org.server;
 
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -66,7 +66,7 @@ public class SDPDistributor extends Thread{
 
     public void startServer() throws IOException {
         mDistributor = new ServerSocket(mPort);
-        mDistributor.setSoTimeout(100);
+        //TODO mDistributor.setSoTimeout(100);
 
         Log.d(TAG,"starting server : ");
         if(!this.isRunning()) {
@@ -98,7 +98,7 @@ public class SDPDistributor extends Thread{
         public void run() {
             Log.i(TAG,"Connection from " + mClient.getInetAddress().getHostAddress());
             try {
-                processRequest(new BufferedReader(new InputStreamReader(mClient.getInputStream())));
+                processRequest(new InputStreamReader(mClient.getInputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e(TAG,"InputStream error");
@@ -115,25 +115,30 @@ public class SDPDistributor extends Thread{
             }
         }
         
-        void processRequest(BufferedReader bf) throws ClassNotFoundException{
-            String line;
+        void processRequest(InputStreamReader reader) throws ClassNotFoundException{
+            char[] line = new char[100];
             try {
-                while((line = bf.readLine()) != null){
-                    Log.d(TAG,"request message is " + line);
-                    switch (line){
+                //while(reader.read(line) != 0){
+                reader.read(line);
+                    Log.d(TAG,"request message is " + String.copyValueOf(line));
+                    switch (String.copyValueOf(line)){
                         case REQUEST_SDP:Log.d(TAG,"SDP file is requested");sendSDP(mClient.getOutputStream());break;
                         default:throw new ClassNotFoundException("Unknown request");
                     }
-                }
+                //}
             } catch (IOException e) {
                 Log.i(TAG,"Client disconnected");
                 e.printStackTrace();
             }
         }
-        
+
         void sendSDP(OutputStream out) throws IOException {
-            out.write(mSessionDiscription.getBytes());
-            out.flush();
+            PrintWriter pw = new PrintWriter(out);
+            pw.print(mSessionDiscription.getBytes());
+            pw.flush();
+            out.close();
+            //pw.close();
+
         }
     }
 
