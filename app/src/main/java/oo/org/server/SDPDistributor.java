@@ -2,6 +2,7 @@ package oo.org.server;
 
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -116,14 +117,14 @@ public class SDPDistributor extends Thread{
         }
         
         void processRequest(InputStreamReader reader) throws ClassNotFoundException{
-            char[] line = new char[100];
+            //char[] line = new char[100];
+            String lineString;
             try {
-                //while(reader.read(line) != 0){
-                reader.read(line);
-                    Log.d(TAG,"request message is " + String.copyValueOf(line));
-                    switch (String.copyValueOf(line)){
+                lineString = new BufferedReader(reader).readLine();
+                    Log.d(TAG,"request message is " + lineString);
+                    switch (lineString){
                         case REQUEST_SDP:Log.d(TAG,"SDP file is requested");sendSDP(mClient.getOutputStream());break;
-                        default:throw new ClassNotFoundException("Unknown request");
+                        default:throw new ClassNotFoundException("Unknown request");//TODO return error info
                     }
                 //}
             } catch (IOException e) {
@@ -134,7 +135,7 @@ public class SDPDistributor extends Thread{
 
         void sendSDP(OutputStream out) throws IOException {
             PrintWriter pw = new PrintWriter(out);
-            pw.print(mSessionDiscription.getBytes());
+            pw.println(mSessionDiscription);
             pw.flush();
             out.close();
             //pw.close();
