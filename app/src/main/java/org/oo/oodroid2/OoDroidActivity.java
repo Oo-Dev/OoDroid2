@@ -12,8 +12,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import net.majorkernelpanic.streaming.Session;
@@ -37,7 +37,7 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
 
     private SDPDistributor mDistributorServer;
     
-    private Button mPlayButton, mFlashButton;
+    private ImageButton mPlayButton, mFlashButton;
     private SurfaceView mSurfaceView;
     private EditText mDstIPText;
     private Session mSession;
@@ -52,8 +52,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        mPlayButton = (Button) findViewById(R.id.bt_play);
-        mFlashButton = (Button) findViewById(R.id.bt_flash);
+        mPlayButton = (ImageButton) findViewById(R.id.bt_play);
+        mFlashButton = (ImageButton) findViewById(R.id.bt_flash);
         mSurfaceView = (SurfaceView) findViewById(R.id.surface);
         mDstIPText = (EditText) findViewById(R.id.et_dst);
         mBitRate = (TextView) findViewById(R.id.tv_bitrate_value);
@@ -103,9 +103,9 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     public void onResume() {
         super.onResume();
         if (mSession.isStreaming()) {
-            mPlayButton.setText(R.string.stop);
+            mPlayButton.setImageDrawable(getResources().getDrawable(R.drawable.bt_stop));
         } else {
-            mPlayButton.setText(R.string.start);
+            mPlayButton.setImageDrawable(getResources().getDrawable(R.drawable.bt_play));
         }
     }
 
@@ -167,7 +167,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     public void onSessionStarted() {
         Log.d(TAG,"Session started.");
         mPlayButton.setEnabled(true);
-        mPlayButton.setText(R.string.stop);
+        mPlayButton.setImageDrawable(getResources().getDrawable(R.drawable.bt_stop));
+        mDstIPText.setVisibility(View.INVISIBLE);
         try {
             Log.d(TAG,"Status of Distributor Server before start server: " + (mDistributorServer.isInterrupted() ? "interrupted" : "Active"));
             mDistributorServer.startServer();// Start or restart
@@ -182,8 +183,9 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     public void onSessionStopped() {
         Log.d(TAG,"Session stopped.");
         mPlayButton.setEnabled(true);
-        mPlayButton.setText(R.string.start);
+        mPlayButton.setImageDrawable(getResources().getDrawable(R.drawable.bt_play));
         mDistributorServer.stopServer();
+        mDstIPText.setVisibility(View.VISIBLE);
         Log.d(TAG,"Status of Distributor Server after stop server: " + (mDistributorServer.isInterrupted() ? "interrupted" : "Active"));
     }
 
