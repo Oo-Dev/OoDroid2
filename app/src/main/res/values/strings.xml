@@ -8,4 +8,5 @@
     <string name="flash">Flash</string>
     <string name="bit_rate">Bit rate: </string>
     <string name="bit_rate_zero">0Kbps</string>
+    <string name="default_ip" translatable="false">239.1.1.1</string>
 </resources>
