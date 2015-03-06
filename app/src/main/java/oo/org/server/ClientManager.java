@@ -17,8 +17,8 @@ public class ClientManager {
     private final static TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
 
     static {
+        /** singleton mode */
         sInstance = new ClientManager();
-
     }
     
     public static ClientManager getsInstance() {
@@ -27,19 +27,12 @@ public class ClientManager {
 
     static ClientManager sInstance = null;
     
-    public void handleClient(Socket mClient){
-        
-
-
-    }
-    
-    public ClientTask startListen(){
+    public ClientTask startDistribute(Socket mClient){
         
         ClientTask mClientTask = new ClientTask();
 
         sInstance.mClientThreadPool.execute(mClientTask.getClientRunnable());
         return mClientTask;
-        
     }
 
     private ClientManager(){
@@ -50,10 +43,6 @@ public class ClientManager {
                 KEEP_ALIVE_TIME,
                 KEEP_ALIVE_TIME_UNIT,
                 mClientQueue);
-        
-
-
-        
     }
     
    

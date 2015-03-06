@@ -11,8 +11,10 @@ import java.net.Socket;
 
 public class ClientRunnable implements Runnable{
 
-    private Socket mClient;
+    /** Thread to handle client request*/
+    private ClientTask mClientTask;
 
+    private Socket mClient;
     private final static String TAG = "ClientRunnable";
 
     @Override
@@ -24,7 +26,7 @@ public class ClientRunnable implements Runnable{
             e.printStackTrace();
             Log.e(TAG,"InputStream error");
         } catch (ClassNotFoundException e) {
-            //TODO send back "Unknown request" error
+            //TODO send back "Bad request" error
             e.printStackTrace();
         }
         Log.i(TAG,"Connect end");
@@ -61,4 +63,9 @@ public class ClientRunnable implements Runnable{
 
     }
 
+    ClientRunnable(ClientTask clientTask){
+        mClientTask = clientTask;
+        mClient = mClientTask.getClient();
+
+    }
 }
