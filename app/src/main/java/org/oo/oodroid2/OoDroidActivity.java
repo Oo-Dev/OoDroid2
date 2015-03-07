@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.majorkernelpanic.streaming.Session;
 import net.majorkernelpanic.streaming.SessionBuilder;
@@ -46,11 +47,21 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
     SharedPreferences.Editor mEditor;
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Toast.makeText(OoDroidActivity.this, ""+hasFocus, Toast.LENGTH_SHORT).show();
+        if(hasFocus){
+            UIUtils.setImmersive(getWindow().getDecorView(), true);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oo_droid);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        UIUtils.setImmersive(getWindow().getDecorView(), true);
 
         mPlayButton = (ImageButton) findViewById(R.id.bt_play);
         mFlashButton = (ImageButton) findViewById(R.id.bt_flash);
@@ -61,7 +72,8 @@ public class OoDroidActivity extends ActionBarActivity implements View.OnClickLi
         settings = this.getPreferences(MODE_PRIVATE);
         mEditor = settings.edit();
         mDstIPText.setText(settings.getString(KEY_IP,"239.1.1.1"));
-        
+
+
         //set nessesary information of session
         mSession = SessionBuilder.getInstance()
                 .setCallback(this)

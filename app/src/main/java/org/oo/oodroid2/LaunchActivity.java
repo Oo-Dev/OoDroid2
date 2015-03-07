@@ -7,13 +7,14 @@ import android.os.Handler;
 
 public class LaunchActivity extends Activity{
 
-    private final static int LAUNCH_ACTIVITY_DELAY = 1500;
+    private final static int LAUNCH_ACTIVITY_DELAY = 3000;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+        UIUtils.setImmersive(getWindow().getDecorView(), false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
