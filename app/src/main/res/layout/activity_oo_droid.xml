@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button"
-            android:background="@android:drawable/presence_video_online"
+            android:background="@android:drawable/ic_media_play"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             />
