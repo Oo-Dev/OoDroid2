@@ -1,5 +1,6 @@
 package org.oo.oodroid2;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -27,7 +28,7 @@ import java.io.IOException;
 import oo.org.server.SDPDistributor;
 
 
-public class OoDroidActivity extends ActionBarActivity implements View.OnClickListener,Session.Callback,SurfaceHolder.Callback{
+public class OoDroidActivity extends Activity implements View.OnClickListener,Session.Callback,SurfaceHolder.Callback{
 
 
     private final static String TAG = "OoDroidActivity";
