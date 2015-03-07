@@ -1,0 +1,22 @@
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+    <string-array name="pref_video_encoding_entries">
+        <item>H.264</item>
+        <item>H.263</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="pref_video_resolution_entries">
+        <item>1920x1080 (16:9)</item>
+        <item>1280x720 (16:9)</item>
+        <item>640x480 (4:3)</item>
+        <item>320x240 (4:3)</item>
+    </string-array>
+
+    <string-array name="pref_audio_encoding_entries">
+        <item>AAC</item>
+        <item>AMRNB</item>
+        <item>None</item>
+    </string-array>
+</resources>

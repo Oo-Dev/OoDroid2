@@ -7,6 +7,35 @@
     <string name="stop">Stop</string>
     <string name="flash">Flash</string>
     <string name="bit_rate">Bit rate: </string>
-    <string name="bit_rate_zero">0Kbps</string>
+    <string name="bit_rate_zero" translatable="false">0Kbps</string>
     <string name="default_ip" translatable="false">239.1.1.1</string>
+
+
+    <string name="hello_world" translatable="false">Hello world!</string>
+
+    <string name="key_video_encoding" translatable="false">video_encoding</string>
+    <string name="key_video_frame_rate" translatable="false">video_frame_rate</string>
+    <string name="key_video_resolution" translatable="false">video_resolution</string>
+    <string name="key_video_bitrate" translatable="false">video_bitrate</string>
+
+    <string name="key_audio_encoding" translatable="false">audio_encoding</string>
+    <string name="key_audio_bitrate" translatable="false">audio_bitrate</string>
+    <string name="key_audio_sampling_rate" translatable="false">audio_sampling_rate</string>
+
+    <string name="title_video_encoding">Video Encoding</string>
+    <string name="title_video_frame_rate">Video Rrame Rate(fps)</string>
+    <string name="title_video_resolution">Video Resolution</string>
+    <string name="title_video_bitrate">Video Bitrate(Kbps)</string>
+
+    <string name="title_audio_encoding">Audio Encoding</string>
+    <string name="title_audio_bitrate">Audio Bitrate(Kbps)</string>
+    <string name="title_audio_sampling_rate">Audio Sampling Rate(KHz)</string>
+
+    <string name="title_auto_focus">Auto Focus</string>
+    <string name="title_destination_IP">Destination IP Address</string>
+
+    <string name="title_video_settings">Video Settings</string>
+    <string name="title_audio_settings">Audio Settings</string>
+
+    <string name="title_settings">Settings</string>
 </resources>

@@ -1,0 +1,13 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="org.bitcs.oo.oodroid2.SettingsActivity$VideoPreferenceFragment"
+        android:title="Video Settings" />
+
+    <header
+        android:fragment="org.bitcs.oo.oodroid2.SettingsActivity$AudioPreferenceFragment"
+        android:title="Audio Settings" />
+
+</preference-headers>

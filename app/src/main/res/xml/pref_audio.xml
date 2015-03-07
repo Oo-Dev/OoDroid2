@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="@string/key_audio_encoding"
+        android:title="@string/title_audio_encoding"
+        android:entries="@array/pref_audio_encoding_entries"
+        android:entryValues="@array/pref_audio_encoding_entries"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+
+    <EditTextPreference
+        android:key="@string/key_audio_bitrate"
+        android:title="@string/title_audio_bitrate"
+        android:defaultValue="64"
+        android:selectAllOnFocus="true"
+        android:inputType="numberDecimal"
+        android:singleLine="true"
+        android:maxLines="1" />
+
+    <EditTextPreference
+        android:key="@string/key_audio_sampling_rate"
+        android:title="@string/title_audio_sampling_rate"
+        android:defaultValue="48"
+        android:selectAllOnFocus="true"
+        android:inputType="numberDecimal"
+        android:singleLine="true"
+        android:maxLines="1" />
+
+
+
+</PreferenceScreen>

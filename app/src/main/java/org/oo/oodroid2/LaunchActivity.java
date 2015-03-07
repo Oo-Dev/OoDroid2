@@ -14,7 +14,6 @@ public class LaunchActivity extends Activity{
         
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        UIUtils.setImmersive(getWindow().getDecorView(), false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

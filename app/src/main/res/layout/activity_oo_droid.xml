@@ -1,86 +1,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".OoDroidActivity"
-    >
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <net.majorkernelpanic.streaming.gl.SurfaceView
-        android:id="@+id/surface"
+    <view
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
+        class="net.majorkernelpanic.streaming.gl.SurfaceView"
+        android:id="@+id/surfaceView"
+        />
+
+    <RelativeLayout
+        android:layout_width="48dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
-    
-    
+        android:id="@+id/panel"
+        android:background="#000000">
 
-    <LinearLayout
-        android:id="@+id/streamButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <ImageButton
-            android:id="@+id/bt_play"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/start"
-            android:src="@drawable/bt_play"/>
+            android:id="@+id/button"
+            android:background="@android:drawable/presence_video_online"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            />
 
-        <ImageButton
-            android:id="@+id/bt_flash"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/flash"
-            android:src="@drawable/bt_flash"/>
-    </LinearLayout>
+            android:id="@+id/button2"
+            android:background="@android:drawable/ic_lock_idle_low_battery"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            />
 
-    <EditText
-        android:id="@+id/et_dst"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/default_ip"
-        android:layout_above="@+id/streamButtons"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/light_blue_alpha"
-        android:textColor="@color/white"
-        android:layout_alignRight="@+id/display_bitrate"
-        android:layout_alignEnd="@+id/display_bitrate" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@color/light_blue_alpha"
-        android:id="@+id/display_bitrate"
-        >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bit_rate"
-        android:id="@+id/tv_bitrate"
-        android:layout_above="@+id/et_dst"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bit_rate_zero"
-        android:id="@+id/tv_bitrate_value"
-        android:layout_above="@+id/et_dst"
-        android:layout_toRightOf="@+id/tv_bitrate"/>
-    </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/button3"
+            android:background="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -5,5 +5,17 @@
     <string name="stop">停止</string>
     <string name="flash">闪光灯</string>
     <string name="bit_rate">比特率</string>
-
+    <string name="title_activity_settings">设置</string>
+    <string name="title_audio_bitrate" translatable="false">音频比特率(Kbps)</string>
+    <string name="title_audio_encoding">音频编码</string>
+    <string name="title_audio_sampling_rate">音频采样率(KHz)</string>
+    <string name="title_video_bitrate">视频比特率(Kbps)</string>
+    <string name="title_video_encoding">视频编码</string>
+    <string name="title_video_frame_rate">视频帧率(fps)</string>
+    <string name="title_video_resolution">视频分辨率</string>
+    <string name="title_audio_settings">音频设置</string>
+    <string name="title_auto_focus">自动对焦</string>
+    <string name="title_destination_IP">目标IP地址</string>
+    <string name="title_settings">设置</string>
+    <string name="title_video_settings">视频设置</string>
 </resources>

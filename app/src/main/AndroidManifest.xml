@@ -33,6 +33,12 @@
             </activity>
         <service android:name="net.majorkernelpanic.streaming.rtsp.RtspServer" />
 
+        <activity
+            android:name="org.oo.oodroid2.SettingsActivity"
+            android:label="@string/title_settings"
+            >
+        </activity>
+
     </application>
     
 </manifest>
