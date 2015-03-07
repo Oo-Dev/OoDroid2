@@ -30,9 +30,9 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(SettingsActivity.this, OoDroidActivity.class);
-        startActivity(i);
-        finish();
+        //Intent i = new Intent(SettingsActivity.this, OoDroidActivity.class);
+        //startActivity(i);
+        //finish();
     }
 
     private void setupSimplePreferencesScreen() {

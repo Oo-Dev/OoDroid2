@@ -39,10 +39,11 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
     private final static String TAG = "OoDroidActivity";
 
     SurfaceView surfaceView;
-    Session session;
+    Session mSession;
     SDPDistributor distributorServer;
     Button buttonPlay, buttonFlash, buttonSettings;
-    String destination_IP;
+    String destinationIP;
+    int w,h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +58,107 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
         buttonFlash = (Button) findViewById(R.id.button2);
         buttonSettings = (Button) findViewById(R.id.button3);
 
+
+
+        buttonPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mSession.isStreaming()){
+                    mSession.configure();
+                    mSession.start();
+                } else {
+                    mSession.stop();
+                }
+            }
+        });
+
+        buttonFlash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSession.toggleFlash();
+            }
+        });
+
+        buttonSettings.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(OoDroidActivity.this, SettingsActivity.class);
+                startActivity(i);
+                //finish();
+            }
+        });
+
+    }
+
+
+
+    @Override
+    public void onBitrateUpdate(long bitrate) {
+
+    }
+
+    @Override
+    public void onSessionError(int reason, int streamType, Exception e) {
+        Log.v(TAG, "onSessionError");
+    }
+
+    @Override
+    public void onPreviewStarted() {
+        Log.v(TAG, "onPreviewStarted");
+    }
+
+    @Override
+    public void onSessionConfigured() {
+    }
+
+    @Override
+    public void onSessionStarted() {
+        Log.v(TAG, "onSessionStarted");
+        Toast.makeText(OoDroidActivity.this, "Streaming start", Toast.LENGTH_SHORT).show();
+        distributorServer = new SDPDistributor(mSession.getSessionDescription());
+        Log.v(TAG, mSession.getSessionDescription());
+        try {
+            distributorServer.startServer();// Start or restart
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSessionStopped() {
+        Log.v(TAG, "onSessionStopped");
+        Toast.makeText(OoDroidActivity.this, "Streaming has stopped", Toast.LENGTH_SHORT).show();
+        distributorServer.stopServer();
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        mSession.startPreview();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        Log.v(TAG, "surfaceChanged");
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.v(TAG, "surfaceDestroyed");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v(TAG, "onResume");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(OoDroidActivity.this);
 
-        destination_IP = sp.getString("destination_IP", "239.1.1.1");
+        destinationIP = sp.getString("destination_IP", "239.1.1.1");
         String audio_encoding = sp.getString(getString(R.string.key_audio_encoding), "None");int audio_encoding_value;
         int audio_bitrate = Integer.parseInt(sp.getString(getString(R.string.key_audio_bitrate), "64"));
         int audio_sampling_rate = Integer.parseInt(sp.getString(getString(R.string.key_audio_sampling_rate), "48"));
         String video_encoding = sp.getString(getString(R.string.key_video_encoding), "H.263"); int video_encoding_value;
-        String video_resolution = sp.getString(getString(R.string.key_video_resolution), "320x240 (4:3)"); int w,h;
+        String video_resolution = sp.getString(getString(R.string.key_video_resolution), "320x240 (4:3)");
+
         int video_frame_rate = Integer.parseInt(sp.getString(getString(R.string.key_video_frame_rate), "24"));
         int video_bitrate = Integer.parseInt(sp.getString(getString(R.string.key_video_bitrate), "500"));
 
@@ -92,7 +186,7 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
             w = 320; h = 240;
         }
 
-        session = SessionBuilder.getInstance()
+        mSession = SessionBuilder.getInstance()
                 .setCallback(this)
                 .setSurfaceView(surfaceView)
                 .setContext(getApplicationContext())
@@ -102,114 +196,27 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
                 .setVideoQuality(new VideoQuality(w,h,video_frame_rate,video_bitrate * 1000))
                 .setTimeToLive(1)
                 .build();
-        session.setPreviewOrientation(0);
-        session.setDestination(destination_IP);
-        session.configure();
+        mSession.setPreviewOrientation(0);
+        mSession.setDestination(destinationIP);
+        mSession.configure();
 
         surfaceView.getHolder().addCallback(this);
-
-        buttonPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!session.isStreaming()){
-                    session.configure();
-                    session.start();
-                } else {
-                    session.stop();
-                }
-            }
-        });
-
-        buttonFlash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                session.toggleFlash();
-            }
-        });
-
-        buttonSettings.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(OoDroidActivity.this, SettingsActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
-    }
-
-
-
-    @Override
-    public void onBitrateUpdate(long bitrate) {
-
-    }
-
-    @Override
-    public void onSessionError(int reason, int streamType, Exception e) {
-        Log.v(TAG, "onSessionError");
-    }
-
-    @Override
-    public void onPreviewStarted() {
-        Log.v(TAG, "onPreviewStarted");
-    }
-
-    @Override
-    public void onSessionConfigured() {
-        distributorServer = new SDPDistributor(session.getSessionDescription());
-        Log.v(TAG, session.getSessionDescription());
-    }
-
-    @Override
-    public void onSessionStarted() {
-        Log.v(TAG, "onSessionStarted");
-        Toast.makeText(OoDroidActivity.this, "Streaming start", Toast.LENGTH_SHORT).show();
-        try {
-            distributorServer.startServer();// Start or restart
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onSessionStopped() {
-        Log.v(TAG, "onSessionStopped");
-        Toast.makeText(OoDroidActivity.this, "Streaming has stopped", Toast.LENGTH_SHORT).show();
-        distributorServer.stopServer();
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        session.startPreview();
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.v(TAG, "surfaceChanged");
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.v(TAG, "surfaceDestroyed");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.v(TAG, "onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.v(TAG, "onPause");
+        if(mSession.isStreaming())
+            mSession.stop();
     }
 
     @Override
     protected void onDestroy() {
         super.onPause();
         Log.v(TAG, "onPause");
+        if(mSession.isStreaming())
+            mSession.stop();
     }
 
 
