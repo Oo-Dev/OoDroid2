@@ -128,7 +128,6 @@ public class SDPDistributor{
         }
         
         void processRequest(InputStreamReader reader) throws ClassNotFoundException{
-            //char[] line = new char[100];
             String lineString;
             try {
                 lineString = new BufferedReader(reader).readLine();
