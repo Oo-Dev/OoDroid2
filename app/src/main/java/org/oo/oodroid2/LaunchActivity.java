@@ -10,7 +10,7 @@ import android.view.animation.ScaleAnimation;
 
 public class LaunchActivity extends Activity{
 
-    private final static int LAUNCH_ACTIVITY_DELAY = 1500;
+    private final static int LAUNCH_ACTIVITY_DELAY = 500;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +21,8 @@ public class LaunchActivity extends Activity{
         Animation anim = new ScaleAnimation(0.0f, 10.0f, 0.0f, 10.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         anim.setDuration(1510);
-        logo.setAnimation(anim);
-        anim.startNow();
+        //logo.setAnimation(anim);
+        //anim.startNow();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
