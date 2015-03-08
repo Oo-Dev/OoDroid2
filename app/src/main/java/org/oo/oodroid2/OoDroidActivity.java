@@ -204,6 +204,4 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
         super.onPause();
         Log.v(TAG, "onPause");
     }
-
-
 }
