@@ -21,7 +21,7 @@ import net.majorkernelpanic.streaming.video.VideoQuality;
 
 import java.io.IOException;
 
-import oo.org.server.SDPDistributor;
+import oo.org.server.SDPDistributor2;
 
 
 public class OoDroidActivity extends Activity implements Session.Callback,SurfaceHolder.Callback{
@@ -31,7 +31,7 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
 
     SurfaceView surfaceView;
     Session session;
-    SDPDistributor distributorServer;
+    SDPDistributor2 distributorServer;
     Button buttonPlay, buttonFlash, buttonSettings;
     String destination_IP;
 
@@ -150,7 +150,7 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
 
     @Override
     public void onSessionConfigured() {
-        distributorServer = new SDPDistributor(session.getSessionDescription());
+        distributorServer = new SDPDistributor2(session.getSessionDescription());
         Log.v(TAG, session.getSessionDescription());
     }
 
