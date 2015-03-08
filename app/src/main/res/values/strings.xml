@@ -13,6 +13,7 @@
 
     <string name="hello_world" translatable="false">Hello world!</string>
 
+    <string name="key_destination_IP">destination_IP</string>
     <string name="key_video_encoding" translatable="false">video_encoding</string>
     <string name="key_video_frame_rate" translatable="false">video_frame_rate</string>
     <string name="key_video_resolution" translatable="false">video_resolution</string>

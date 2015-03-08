@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.audiofx.BassBoost;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -11,6 +12,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 
 import java.util.List;
@@ -19,20 +21,21 @@ import java.util.List;
 public class SettingsActivity extends PreferenceActivity {
 
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
+    private static Context context = null;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
+        context = SettingsActivity.this;
         setupSimplePreferencesScreen();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //Intent i = new Intent(SettingsActivity.this, OoDroidActivity.class);
-        //startActivity(i);
-        //finish();
+        Intent i = new Intent(SettingsActivity.this, OoDroidActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void setupSimplePreferencesScreen() {
@@ -95,7 +98,40 @@ public class SettingsActivity extends PreferenceActivity {
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
             preference.setSummary(stringValue);
-            return true;
+            String key = preference.getKey();
+            System.out.println(preference.getKey());
+            boolean valid = true;
+            if(key.equals("destination_IP")) {
+                if(!Utils.isIpAddress((String) value)){
+                    Toast.makeText(context, "invalid IP address", Toast.LENGTH_SHORT).show();
+                    valid = false;
+                }
+            } else if(key.equals("audio_bitrate")) {
+                int val = Integer.parseInt((String) value);
+                if(val < 8 || val > 128){
+                    Toast.makeText(context, "invalid audio bitrate", Toast.LENGTH_SHORT).show();
+                    valid = false;
+                }
+            } else if(key.equals("audio_sampling_rate")) {
+                int val = Integer.parseInt((String) value);
+                if(val < 8 || val > 48){
+                    Toast.makeText(context, "invalid audio sampling rate", Toast.LENGTH_SHORT).show();
+                    valid = false;
+                }
+            } else if(key.equals("video_bitrate")) {
+                int val = Integer.parseInt((String) value);
+                if(val < 8 || val > 4096){
+                    Toast.makeText(context, "invalid video bitrate", Toast.LENGTH_SHORT).show();
+                    valid = false;
+                }
+            } else if(key.equals("video_frame_rate")) {
+                int val = Integer.parseInt((String) value);
+                if(val < 7 || val > 30){
+                    Toast.makeText(context, "invalid video frame rate", Toast.LENGTH_SHORT).show();
+                    valid = false;
+                }
+            }
+            return valid;
         }
     };
 
