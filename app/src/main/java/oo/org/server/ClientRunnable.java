@@ -12,7 +12,6 @@ import java.net.Socket;
 public class ClientRunnable implements Runnable{
 
     /** Thread to handle client request*/
-    private ClientTask mClientTask;
 
     private Socket mClient;
     private final static String TAG = "ClientRunnable";
@@ -63,9 +62,7 @@ public class ClientRunnable implements Runnable{
 
     }
 
-    ClientRunnable(ClientTask clientTask){
-        mClientTask = clientTask;
-        mClient = mClientTask.getClient();
-
+    ClientRunnable(Socket mClient){
+        this.mClient = mClient;
     }
 }

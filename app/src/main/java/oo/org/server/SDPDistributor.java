@@ -104,8 +104,7 @@ public class SDPDistributor{
         public WorkerThread(final Socket client){
             this.mClient = client;
         }
-        
-        
+
         @Override
         public void run() {
             Log.i(TAG,"Connection from " + mClient.getInetAddress().getHostAddress());
