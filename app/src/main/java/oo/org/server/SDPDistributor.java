@@ -14,7 +14,7 @@ import java.net.Socket;
  * Distributs session discription to clients,and they save it as .sdp file.
  * So a client should get connection to this server firstly,obtain the .sdp file then open the file with VLC.
  */
-public class SDPDistributor extends Thread{
+public class SDPDistributor{
     private final static String TAG="SDPDistributor";
 
     /** Client wants sdp file */
@@ -26,7 +26,9 @@ public class SDPDistributor extends Thread{
     
     /** Port used by default*/
     public final static int DISTRIBUTOR_DEFAULT_PORT = 25581;
-    ServerSocket mDistributor;
+    
+    //ServerSocket mDistributor;
+    RequestListener mRequestListener;
 
     protected int mPort = DISTRIBUTOR_DEFAULT_PORT;
 
@@ -35,57 +37,66 @@ public class SDPDistributor extends Thread{
         this.mSessionDiscription = sessionDiscription;
     }
 
-    @Override
-    public void run() {
-        alive = true;
-        while(!Thread.interrupted()) {
-            try {
-                Log.d(TAG, "SDP distributor is listening on port " + mDistributor.getLocalPort());
-                Socket client = mDistributor.accept();
-                new WorkerThread(client).start();
-            } catch (IOException e) {
-                e.printStackTrace();
-                continue;
-            }
-        }
-        Log.i(TAG, "SDP distributor stopped !");
-    }
+
 
     public void stopServer() {
-        try {
-            if(!mDistributor.isClosed()) {
-                Log.d("OoDroidActivity","SDP server is stopped");
-                this.interrupt();
-                mDistributor.close();
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "close server error");
-            e.printStackTrace();
+        if(mRequestListener != null && !mRequestListener.isClosed()) {
+            Log.d("OoDroidActivity", "SDP server is stopped");
+            mRequestListener.close();
+            mRequestListener = null;
+            alive = false;
         }
     }
 
 
     public void startServer() throws IOException {
-        mDistributor = new ServerSocket(mPort);
-        //TODO mDistributor.setSoTimeout(100);
-
-        Log.d(TAG,"starting server : ");
-        if(!this.isRunning()) {
-            Log.d(TAG, "first");
-            this.start();
+        if(mRequestListener == null)
+            mRequestListener = new RequestListener();
+        else if(!alive)
+            mRequestListener.start();
+        //mDistributor.setSoTimeout(100);
+    }
+    
+    
+    class RequestListener extends Thread implements Runnable{
+        
+        private final ServerSocket requestListener;
+        
+        public RequestListener() throws IOException {
+            requestListener = new ServerSocket(mPort);
         }
-        else{
-            if(this.isInterrupted())
-                Log.d(TAG,"interrupted");
-            else
-                Log.d(TAG, "not interrupted");
-            this.interrupt();
-            if(this.isInterrupted())
-                Log.d(TAG,"interrupted");
-            else
-                Log.d(TAG, "not interrupted");
+        
+        @Override
+        public void run() {
+            alive = true;
+            while(!Thread.interrupted()) {
+                try {
+                    Log.d(TAG, "SDP distributor is listening on port " + requestListener.getLocalPort());
+                    Socket client = requestListener.accept();
+                    new WorkerThread(client).start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    continue;
+                }
+            }
+            Log.i(TAG, "SDP distributor stopped !");
+        }
+        
+        public boolean isClosed(){
+            return requestListener.isClosed();   
+        }
+
+        public void close(){
+            try {
+                requestListener.close();
+            } catch (IOException e) {
+                Log.e(TAG,"request listener of server close error");
+                e.printStackTrace();
+            }
+
         }
     }
+    
     class WorkerThread extends Thread{
         
         private Socket mClient;
@@ -93,8 +104,7 @@ public class SDPDistributor extends Thread{
         public WorkerThread(final Socket client){
             this.mClient = client;
         }
-        
-        
+
         @Override
         public void run() {
             Log.i(TAG,"Connection from " + mClient.getInetAddress().getHostAddress());
@@ -117,7 +127,6 @@ public class SDPDistributor extends Thread{
         }
         
         void processRequest(InputStreamReader reader) throws ClassNotFoundException{
-            //char[] line = new char[100];
             String lineString;
             try {
                 lineString = new BufferedReader(reader).readLine();
@@ -149,10 +158,5 @@ public class SDPDistributor extends Thread{
 
     public void setPort(int mPort) {
         this.mPort = mPort;
-    }
-    
-    public boolean isRunning(){
-        return alive;
-
     }
 }
