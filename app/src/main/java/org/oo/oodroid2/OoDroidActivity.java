@@ -102,7 +102,7 @@ public class OoDroidActivity extends Activity implements Session.Callback,Surfac
                 .setSurfaceView(surfaceView)
                 .setContext(getApplicationContext())
                 .setAudioEncoder(audioEncodingValue)
-                .setAudioQuality(new AudioQuality(audioSamplingRate * 1000, audioBitrate * 1000))
+                .setAudioQuality(new AudioQuality(audioSamplingRate, audioBitrate * 1000))
                 .setVideoEncoder(videoEncodingValue)
                 .setVideoQuality(new VideoQuality(videoResolutionW, videoResolutionH, videoFrameRate, videoBitrate * 1000))
                 .setTimeToLive(1)

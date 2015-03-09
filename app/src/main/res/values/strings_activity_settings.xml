@@ -14,9 +14,69 @@
         <item>320x240 (4:3)</item>
     </string-array>
 
+    <string-array name="entry_video_frame_rate">
+        <item>7fps</item>
+        <item>15fps</item>
+        <item>24fps</item>
+        <item>30fps</item>
+    </string-array>
+
+    <string-array name="value_video_frame_rate">
+        <item>7</item>
+        <item>15</item>
+        <item>24</item>
+        <item>30</item>
+    </string-array>
+
+    <string-array name="entry_video_bitrate">
+        <item>256Kbps</item>
+        <item>512Kbps</item>
+        <item>1024Kbps</item>
+        <item>2048Kbps</item>
+    </string-array>
+
+    <string-array name="value_video_bitrate">
+        <item>256</item>
+        <item>512</item>
+        <item>1024</item>
+        <item>2048</item>
+    </string-array>
+
     <string-array name="pref_audio_encoding_entries">
         <item>AAC</item>
         <item>AMRNB</item>
         <item>None</item>
     </string-array>
+
+    <string-array name="entry_audio_bitrate">
+        <item>8kbps</item>
+        <item>32kbps</item>
+        <item>16kbps</item>
+        <item>64kbps</item>
+        <item>128kbps</item>
+        <item>320kbps</item>
+    </string-array>
+    
+    <string-array name="value_audio_bitrate">
+        <item>8</item>
+        <item>32</item>
+        <item>16</item>
+        <item>64</item>
+        <item>128</item>
+        <item>320</item>
+    </string-array>
+
+    <string-array name="entry_audio_sampling_rate">
+        <item>22.05KHz</item>
+        <item>44.1KHz</item>
+        <item>48KHz</item>
+    </string-array>
+
+    <string-array name="value_audio_sampling_rate">
+        <item>22050</item>
+        <item>44100</item>
+        <item>16</item>
+    </string-array>
+
+
 </resources>

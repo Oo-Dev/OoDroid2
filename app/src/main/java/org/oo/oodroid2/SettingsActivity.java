@@ -7,11 +7,14 @@ import android.content.res.Configuration;
 import android.media.audiofx.BassBoost;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.widget.Toast;
 
 
@@ -98,40 +101,7 @@ public class SettingsActivity extends PreferenceActivity {
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
             preference.setSummary(stringValue);
-            String key = preference.getKey();
-            System.out.println(preference.getKey());
-            boolean valid = true;
-            if(key.equals("destination_IP")) {
-                if(!Utils.isIpAddress((String) value)){
-                    Toast.makeText(context, "invalid IP address", Toast.LENGTH_SHORT).show();
-                    valid = false;
-                }
-            } else if(key.equals("audio_bitrate")) {
-                int val = Integer.parseInt((String) value);
-                if(val < 8 || val > 128){
-                    Toast.makeText(context, "invalid audio bitrate", Toast.LENGTH_SHORT).show();
-                    valid = false;
-                }
-            } else if(key.equals("audio_sampling_rate")) {
-                int val = Integer.parseInt((String) value);
-                if(val < 8 || val > 48){
-                    Toast.makeText(context, "invalid audio sampling rate", Toast.LENGTH_SHORT).show();
-                    valid = false;
-                }
-            } else if(key.equals("video_bitrate")) {
-                int val = Integer.parseInt((String) value);
-                if(val < 8 || val > 4096){
-                    Toast.makeText(context, "invalid video bitrate", Toast.LENGTH_SHORT).show();
-                    valid = false;
-                }
-            } else if(key.equals("video_frame_rate")) {
-                int val = Integer.parseInt((String) value);
-                if(val < 7 || val > 30){
-                    Toast.makeText(context, "invalid video frame rate", Toast.LENGTH_SHORT).show();
-                    valid = false;
-                }
-            }
-            return valid;
+            return true;
         }
     };
 
